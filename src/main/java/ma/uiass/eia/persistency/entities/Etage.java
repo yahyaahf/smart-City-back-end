@@ -28,7 +28,7 @@ public class Etage {
 	@JsonIgnore
 	private Collection<WorkSpace> workSpaces;
 	
-	
+	@JsonIgnore
 	@ManyToOne
 	private SmartBuilding building;
 	

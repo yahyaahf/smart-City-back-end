@@ -20,9 +20,9 @@ public class InitializeDB {
 		 
 		 villedao.getAll().forEach(System.out::println);
 		 */
-	 SmartBuildingDaoImp smartbuildingdao=new SmartBuildingDaoImp();
+	 //SmartBuildingDaoImp smartbuildingdao=new SmartBuildingDaoImp();
 	 //smartbuildingdao.create(new SmartBuilding(3,731,33.57,7.58,"pppppp"));
-	 smartbuildingdao.getAllByVille(1).forEach(System.out::println);
+	 //smartbuildingdao.getAllByVille(1).forEach(System.out::println);
 	 
 	 //smartbuildingdao.getAll().forEach(System.out::println);
 		 

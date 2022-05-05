@@ -2,6 +2,7 @@ package ma.uiass.eia.persistency.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 
@@ -22,19 +23,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @DiscriminatorColumn(name = "WS_TYPE")
 
 
+
 public abstract class WorkSpace implements Serializable {
    @Id
    @GeneratedValue(strategy=GenerationType.IDENTITY)
-   @JsonIgnore
 	private long numero;
 	
 	private int surface;
-
-	
+	@Column(name = "PRIX")
+	private Double prix;
 	private String position;
-	
-	@ManyToOne
 	@JsonIgnore
+	@ManyToOne
 	private Etage etage;
 	
 	
@@ -43,20 +43,22 @@ public abstract class WorkSpace implements Serializable {
 	}
 	
 
-	public WorkSpace( int surface, String position) {
+	public WorkSpace( int surface, String position,Double prix) {
 		super();
 		
 		this.surface = surface;
 		this.position = position;
+		this.prix=prix;
 	}
 
 
-	public WorkSpace(int surface, Etage etage, String position) {
+	public WorkSpace(int surface, Etage etage, String position,Double prix) {
 		super();
 		this.surface = surface;
 		
 		this.etage = etage;
 		this.position = position;
+		this.prix=prix;
 	}
 
 	public long getNumero() {
@@ -91,6 +93,16 @@ public abstract class WorkSpace implements Serializable {
 
 	public void setPosition(String position) {
 		this.position = position;
+	}
+
+
+	public Double getPrix() {
+		return prix;
+	}
+
+
+	public void setPrix(Double prix) {
+		this.prix = prix;
 	}
 
 	

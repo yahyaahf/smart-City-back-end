@@ -33,7 +33,7 @@ public class SmartBuilding implements Serializable{
 	
 	private double longitude;
 	private double latitude;
-	
+	@JsonIgnore
 	@ManyToOne
 	private Ville ville;
 	

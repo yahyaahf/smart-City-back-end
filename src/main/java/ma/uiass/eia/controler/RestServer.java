@@ -2,23 +2,35 @@ package ma.uiass.eia.controler;
 
 import static spark.Spark.*;
 import spark.Service;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.print.attribute.standard.Severity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import ma.uiass.eia.persistency.dto.WorkSpaceDto;
+import ma.uiass.eia.persistency.entities.Client;
+import ma.uiass.eia.persistency.entities.ClientEntreprise;
+import ma.uiass.eia.persistency.entities.ClientIndividu;
 import ma.uiass.eia.persistency.entities.Etage;
+import ma.uiass.eia.persistency.entities.Location;
 import ma.uiass.eia.persistency.entities.SmartBuilding;
 import ma.uiass.eia.persistency.entities.Ville;
 
 import ma.uiass.eia.persistency.entities.WorkSpace;
+import ma.uiass.eia.service.ClientService;
+import ma.uiass.eia.service.ClientServiceInterface;
 import ma.uiass.eia.service.EtageService;
 import ma.uiass.eia.service.EtageServiceInterface;
+import ma.uiass.eia.service.LocationService;
 import ma.uiass.eia.service.SmartBuildingService;
 import ma.uiass.eia.service.SmartBuildingServiceInterface;
 import ma.uiass.eia.service.VilleService;
@@ -32,6 +44,8 @@ public class RestServer {
 	private static SmartBuildingService serviceS;
 	private static EtageServiceInterface serviceE;
 	private static WorkSpaceServiceInterface serviceW;
+	private static ClientService serviceC;
+	private static LocationService serviceL;
 
 	static {
 //		serviceSpark=Service.ignite();
@@ -39,6 +53,8 @@ public class RestServer {
 		serviceS = new SmartBuildingService();
 		serviceE = new EtageService();
 		serviceW = new WorkSpaceService();
+		serviceC = new ClientService();
+		serviceL = new LocationService();
 	}
 	public RestServer() {
 
@@ -171,11 +187,10 @@ public class RestServer {
         return message; 
     },gson::toJson); 
     
-    get("/api/smartBuildings/:id",(req,res)->{
+    get("/api/smartBuildings/smartBuilding/:id",(req,res)->{
     	
         
         String parame = req.params("id");
-       
         long id =Long.parseLong(parame);
         SmartBuilding smartBuilding=serviceS.getSmartBuildingById(id);
         
@@ -251,7 +266,7 @@ public class RestServer {
         return message; 
     },gson::toJson); 
     
-    get("/api/etages/:id",(req,res)->{
+    get("/api/etages/etage/:id",(req,res)->{
         
         
         String parame = req.params("id");
@@ -300,7 +315,7 @@ public class RestServer {
     	String parame = req.params("idEtage");
         long idEtage =Long.parseLong(parame);
     	
-        List<WorkSpace> workSpaces=serviceW.getAllWorkSpacesByEtage(idEtage);
+        List<WorkSpaceDto> workSpaces=serviceW.getAllWorkSpacesByEtage(idEtage);
         
         res.type("application/json");
         
@@ -319,8 +334,9 @@ public class RestServer {
 		int surface=workSpace.get("surface").getAsInt();
 		String type=workSpace.get("type").getAsString();
 		Etage etage=serviceE.getEtageById(id);
+		double prix=workSpace.get("prix").getAsDouble();
 		
-		serviceW.createWorkSpace(surface, type, etage, position);		
+		serviceW.createWorkSpace(surface, type, etage, position,prix);		
 		
 		res.type("application/json");
         
@@ -339,9 +355,9 @@ public class RestServer {
 		String position =workSpace.get("position").getAsString();
 		int surface=workSpace.get("surface").getAsInt();
 		String type=workSpace.get("type").getAsString();
+		double prix=workSpace.get("prix").getAsDouble();
 		
-		
-		serviceW.updateWorkSpace(surface, type, position, id);		
+		serviceW.updateWorkSpace(surface, type, position,prix, id);		
 		
 		res.type("application/json");
        
@@ -356,7 +372,7 @@ public class RestServer {
        String parame = req.params("id");
       
        long id =Long.parseLong(parame);
-       WorkSpace workSpace=serviceW.getWorkSpaceById(id);       
+       WorkSpaceDto workSpace=serviceW.getWorkSpaceById(id);       
        //String message =v.toString();
        
        
@@ -366,7 +382,7 @@ public class RestServer {
    },gson::toJson);
     
    
-   delete("/api/workSpaces/:id/remove", (req, res) -> {
+   /*delete("/api/workSpaces/:id/remove", (req, res) -> {
     	 String message="etage deleted avec succes";
     	 String parame = req.params("id");
     	 long id =Long.parseLong(parame);
@@ -375,11 +391,134 @@ public class RestServer {
     	 
     	 res.type("application/json");
     	 return message;
-    	},gson::toJson);
+    	},gson::toJson);*/
     
     
     
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------//  
+   get("/api/ce/clients", (req, res) -> {
+	   List<ClientEntreprise> clients = new ArrayList<ClientEntreprise>() ;
+       clients= serviceC.getAllClientsEntreprise();
+	   
+	   System.out.println("from server --------->"+clients);
+	   res.type("application/json");
+
+	   return clients;
+   
+   		},gson::toJson);
+   
+   
+   get("/api/ci/clients", (req, res) -> {
+	   List<ClientIndividu> clients = new ArrayList<ClientIndividu>() ;
+       clients=serviceC.getAllClientsIndividu();
+       
+	   System.out.println("from server --------->"+clients);
+	   res.type("application/json");
+	   
+   	   return clients;
+   
+   		},gson::toJson);
+   
+   
+   
+  post("/api/clients/add",(req,res)->{
+   	String message="client créee avec succès";
+   	
+   	
+		  
+		//System.out.println(req.body()); 
+		JsonObject client = new JsonParser().parse(req.body()).getAsJsonObject();
+		String  email =client.get("email").getAsString();
+		String telephone=client.get("telephone").getAsString();
+		String adress=client.get("adress").getAsString();
+		String sexe=client.get("sexe").getAsString();
+		String formeJuridique=client.get("formeJuridique").getAsString();
+		String patente=client.get("patente").getAsString();
+		String nom=client.get("nom").getAsString();
+		String prenom=client.get("prenom").getAsString();
+		String type=client.get("type").getAsString();
 		
+		
+		
+		serviceC.createClient(email, telephone, adress, formeJuridique, patente, nom, prenom, sexe,type);
+				
+		
+		res.type("application/json");
+       
+       return message; 
+   },gson::toJson);
+      
+   
+  get("/api/clients/:id",(req,res)->{
+      
+      
+      String parame = req.params("id");
+     
+      long id =Long.parseLong(parame);
+      ClientEntreprise client = serviceC.getClientEntrepriseById(id);
+      //String message =v.toString();
+      
+      
+       res.type("application/json");
+          
+          return client; 
+  },gson::toJson);
+   
+   
+//--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-= 
+  
+  get("/api/ce/locations", (req, res) -> {
+	  
+	  List<Location> locations = serviceL.getAllLocations();
+	   res.type("application/json");
+
+	   return locations;
+  
+  		},gson::toJson);
+   
+   
+ /* post("/api/locations/:idClient/:idWorkspace/add",(req,res)->{
+  	String message="location créee avec succès";
+  	
+  	String parame = req.params("idClient");
+    long idClient =Long.parseLong(parame);
+    
+    String par = req.params("idWorkspace");
+    long idWorkspace =Long.parseLong(par);
+    
+    
+    Client client = serviceC.getClientById(idClient);
+    WorkSpace workSpace = serviceW.getWorkSpaceById(idWorkspace);
+		  
+		//System.out.println(req.body()); //parse(req.body()); 
+		JsonObject location = new JsonParser().parse(req.body()).getAsJsonObject();
+		String dateCreation =location.get("dateCreation").getAsString();
+		String dateDebut=location.get("dateDebut").getAsString();
+		String dateFin = location.get("dateFin").getAsString();
+		
+		serviceL.createLocation(LocalDate.parse(dateCreation), LocalDate.parse(dateDebut), LocalDate.parse(dateFin), client, workSpace)	;
+		
+		res.type("application/json");
+      
+      return message; 
+  },gson::toJson);
+   */
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
 }
 }

@@ -44,8 +44,16 @@ public class WorkSpaceDaoImp implements IDAO<WorkSpace> {
 	public void update(WorkSpace object , long id ) {
 		EntityTransaction transaction= entityManager.getTransaction();
 		try {
-			 transaction.begin();
-		 entityManager.merge(object);
+			transaction.begin();
+			WorkSpace workspace = entityManager.find(WorkSpace.class, id);
+			if (workspace!=null) {
+				workspace.setEtage(object.getEtage());
+				workspace.setPosition(object.getPosition());
+				workspace.setSurface(object.getSurface());
+				entityManager.merge(workspace);
+				transaction.commit();
+			}
+		    
 		}
 		catch(Exception e) {
 			transaction.rollback();
@@ -77,7 +85,7 @@ public class WorkSpaceDaoImp implements IDAO<WorkSpace> {
 	public List<WorkSpace> getAllByEtage(long id) {
 		List<WorkSpace> sb = new ArrayList<>();
 		Etage etage=entityManager.find(Etage.class, id);
-		System.out.println("****************************"+etage+"********************************");
+		System.out.println(etage);
 		Iterator<WorkSpace> iterator=etage.getWorkSpaces().iterator();
 		System.out.println(iterator);
 	while(iterator.hasNext()) {
