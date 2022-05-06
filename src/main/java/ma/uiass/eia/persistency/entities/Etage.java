@@ -15,11 +15,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="ETAGE")
-public class Etage {
+public class Etage extends Element {
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long numEtage;
+	//@Id
+	//@GeneratedValue(strategy=GenerationType.IDENTITY)
+	//private long numEtage;
 	private int etageNum;
 	private double surface;
 	
@@ -58,12 +58,12 @@ public class Etage {
 
 
 	public long getNumEtage() {
-		return numEtage;
+		return super.getId();
 	}
 
 
 	public void setNumEtage(long numEtage) {
-		this.numEtage = numEtage;
+		super.setId(numEtage);;
 	}
 
 

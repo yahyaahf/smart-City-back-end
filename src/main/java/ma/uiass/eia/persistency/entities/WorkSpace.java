@@ -18,19 +18,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
-@Table(name = "WORKSPACE")
-@Inheritance(strategy =InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "WS_TYPE")
+//@Table(name = "WORKSPACE")
+//@Inheritance
 
-
-
-public abstract class WorkSpace implements Serializable {
-   @Id
-   @GeneratedValue(strategy=GenerationType.IDENTITY)
+public abstract class WorkSpace extends Element {
+   //@Id
+   //@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long numero;
 	
 	private int surface;
-	@Column(name = "PRIX")
+	
 	private Double prix;
 	private String position;
 	@JsonIgnore
@@ -43,19 +40,19 @@ public abstract class WorkSpace implements Serializable {
 	}
 	
 
-	public WorkSpace( int surface, String position,Double prix) {
+	public WorkSpace(long numero , int surface, String position,Double prix) {
 		super();
-		
+		this.numero = numero ;
 		this.surface = surface;
 		this.position = position;
 		this.prix=prix;
 	}
 
 
-	public WorkSpace(int surface, Etage etage, String position,Double prix) {
+	public WorkSpace(long numero ,int surface, Etage etage, String position,Double prix) {
 		super();
 		this.surface = surface;
-		
+		this.numero = numero ;
 		this.etage = etage;
 		this.position = position;
 		this.prix=prix;

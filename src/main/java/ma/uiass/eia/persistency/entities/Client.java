@@ -3,6 +3,7 @@ package ma.uiass.eia.persistency.entities;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.DiscriminatorColumn;
@@ -42,6 +43,7 @@ public abstract class Client implements Serializable {
 		this.email = email;
 		this.telephone = telephone;
 		this.adress = adress;
+		//this.locations = new ArrayList<Location>() ;
 	}
 
 	public String getEmail() {
@@ -76,17 +78,10 @@ public abstract class Client implements Serializable {
 		this.locations = locations;
 	}
 
-	public Client(String email, String telephone, String adress, Collection<Location> locations) {
-		super();
-		this.email = email;
-		this.telephone = telephone;
-		this.adress = adress;
-		this.locations = locations;
-	}
 
 	@Override
 	public String toString() {
-		return "Client [email=" + email + ", telephone=" + telephone + ", adress=" + adress + ", locations=" + locations
+		return "Client [email=" + email + ", telephone=" + telephone + ", adress=" + adress + ", locations=" 
 				+ "]";
 	}
 

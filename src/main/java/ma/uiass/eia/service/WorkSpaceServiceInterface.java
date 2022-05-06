@@ -14,11 +14,13 @@ public interface WorkSpaceServiceInterface {
 	
 	List<WorkSpaceDto> getAllWorkSpaces();
 
-	WorkSpaceDto getWorkSpaceById(long numero);
+	WorkSpaceDto getWorkSpaceByIdDto(long numero);
+	
+	WorkSpace getWorkSpaceById(long numero);
 
-	void createWorkSpace(int surface, String type, Etage etage, String position,Double prix);
+	void createWorkSpace(long numero ,int surface, String type, Etage etage, String position,Double prix);
 
-	void updateWorkSpace(int surface, String type, String position,Double prix,long id);
+	void updateWorkSpace(long numero ,int surface, String type, String position,Double prix,long id);
 
 	void deleteWorkSpace(WorkSpace object);
 

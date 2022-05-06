@@ -1,5 +1,7 @@
 package ma.uiass.eia.persistency.dto;
 
+import java.time.LocalDate;
+
 public class WorkSpaceDto {
 	private  long numero;
 	private String position;

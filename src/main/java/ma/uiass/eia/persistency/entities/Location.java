@@ -14,39 +14,39 @@ public class Location implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
-    @JsonDeserialize(using = DateHandler.class)
-    private LocalDate dateCreation;
-    @JsonDeserialize(using = DateHandler.class)
-    private LocalDate dateDebut;
-    @JsonDeserialize(using = DateHandler.class)
-    private LocalDate dateFin ;
+    
+    private String dateCreation;
+    
+    private String dateDebut;
+    
+    private String dateFin ;
     @ManyToOne
     private Client client ;
     @OneToOne
-    private WorkSpace workSpace ;
+    private Element element ;
     
     public Location() {
     	
     }
 
     
-	public LocalDate getDateCreation() {
+	public String getDateCreation() {
 		return dateCreation;
 	}
 
 
-	public void setDateCreation(LocalDate dateCreation) {
+	public void setDateCreation(String dateCreation) {
 		this.dateCreation = dateCreation;
 	}
 
 
-	public WorkSpace getWorkSpace() {
-		return workSpace;
+	public Element getElement() {
+		return element;
 	}
 
 
-	public void setWorkSpace(WorkSpace workSpace) {
-		this.workSpace = workSpace;
+	public void setElement(Element element) {
+		this.element = element;
 	}
 
 
@@ -62,46 +62,41 @@ public class Location implements Serializable {
 
 
 
-	public LocalDate getDateDebut() {
+	public String getDateDebut() {
 		return dateDebut;
 	}
 
 
 
-	public void setDateDebut(LocalDate dateDebut) {
+	public void setDateDebut(String dateDebut) {
 		this.dateDebut = dateDebut;
 	}
 
 
 
-	public LocalDate getDateFin() {
+	public String getDateFin() {
 		return dateFin;
 	}
 
 
 
-	public void setDateFin(LocalDate dateFin) {
+	public void setDateFin(String dateFin) {
 		this.dateFin = dateFin;
 	}
 
 
-	public Location(LocalDate dateCreation, LocalDate dateDebut, LocalDate dateFin, Client client,
-			WorkSpace workSpace) {
+	public Location(String dateCreation, String dateDebut, String dateFin, Client client,
+			Element element) {
 		
 		this.dateCreation = dateCreation;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.client = client;
-		this.workSpace = workSpace;
+		this.element = element;
 	}
 
 
-	public Location(LocalDate dateDebut, LocalDate dateFin, Client client) {
-		super();
-		this.dateDebut = dateDebut;
-		this.dateFin = dateFin;
-		this.client = client;
-	}
+	
 	
 	
 

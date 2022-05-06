@@ -29,7 +29,7 @@ public class WorkSpaceService implements WorkSpaceServiceInterface {
 	}
 
 	@Override
-	public WorkSpaceDto getWorkSpaceById(long numero) {
+	public WorkSpaceDto getWorkSpaceByIdDto(long numero) {
 		WorkSpace work= this.workSpaceDao.getById(numero);
 		WorkSpaceDto wDto=new WorkSpaceDto(work.getNumero(), work.getPosition(),work.toString(),work.getSurface(),work.getEtage().getNumEtage(),work.getPrix());
 		
@@ -37,29 +37,29 @@ public class WorkSpaceService implements WorkSpaceServiceInterface {
 	}
 
 	@Override
-	public void createWorkSpace(int surface, String type, Etage etage, String position,Double prix) {
+	public void createWorkSpace(long numero ,int surface, String type, Etage etage, String position,Double prix) {
 		if (type.equals("BF")) {
-			this.workSpaceDao.create(new BureauFerme(surface, etage, position,prix));
+			this.workSpaceDao.create(new BureauFerme( numero , surface, etage, position,prix));
 			
 		}
 		else if(type.equals("SR")) {
-			this.workSpaceDao.create(new SalleReunion(surface, etage, position,prix));
+			this.workSpaceDao.create(new SalleReunion(numero ,surface, etage, position,prix));
 		}
-		else this.workSpaceDao.create(new EspaceIndividuel(surface, etage, position,prix));
+		else this.workSpaceDao.create(new EspaceIndividuel(numero ,surface, etage, position,prix));
 		
 
 	}
 
 	@Override
-	public void updateWorkSpace(int surface, String type, String position,Double prix,long id) {
+	public void updateWorkSpace(long numero ,int surface, String type, String position,Double prix,long id) {
 		
 		if (type.equals("BF")) {
-			this.workSpaceDao.update(new BureauFerme(surface,  position,prix),id);
+			this.workSpaceDao.update(new BureauFerme(numero ,surface,  position,prix),id);
 		}
 		else if(type.equals("SR")) {
-			this.workSpaceDao.update(new SalleReunion(surface,  position,prix),id);
+			this.workSpaceDao.update(new SalleReunion(numero ,surface,  position,prix),id);
 		}
-		this.workSpaceDao.update(new EspaceIndividuel(surface, position,prix),id);
+		this.workSpaceDao.update(new EspaceIndividuel(numero ,surface, position,prix),id);
 	}
 
 	@Override
@@ -72,10 +72,15 @@ public class WorkSpaceService implements WorkSpaceServiceInterface {
 		List<WorkSpaceDto> list = new ArrayList<WorkSpaceDto>();
 		List<WorkSpace> l= this.workSpaceDao.getAll();
 		for (WorkSpace workSpace : l) {
-			WorkSpaceDto wDto=new WorkSpaceDto(workSpace.getNumero(),workSpace.getPosition(),workSpace.toString(),workSpace.getSurface(),workSpace.getEtage().getNumEtage(),workSpace.getPrix());
+			WorkSpaceDto wDto=new WorkSpaceDto(workSpace.getNumero(),workSpace.getPosition(),workSpace.toString(),workSpace.getSurface(),workSpace.getEtage().getEtageNum(),workSpace.getPrix());
 			list.add(wDto);
 		}		
 		return list ;
+	}
+	@Override
+	public WorkSpace getWorkSpaceById(long numero) {
+		
+		return this.workSpaceDao.getById(numero);
 	}
 
 }

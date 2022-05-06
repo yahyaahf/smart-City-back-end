@@ -5,6 +5,7 @@ import java.util.List;
 
 import ma.uiass.eia.persistency.dao.LocationDaoImp;
 import ma.uiass.eia.persistency.entities.Client;
+import ma.uiass.eia.persistency.entities.Element;
 import ma.uiass.eia.persistency.entities.Location;
 import ma.uiass.eia.persistency.entities.WorkSpace;
 
@@ -27,16 +28,16 @@ public class LocationService implements LocationServiceInterface {
 	}
 
 	@Override
-	public void createLocation(LocalDate dateCreation, LocalDate dateDebut, LocalDate dateFin, Client client,
-			WorkSpace workSpace) {
-		this.locationDao.create(new Location(dateCreation, dateDebut, dateFin, client, workSpace));
+	public void createLocation(String dateCreation, String dateDebut, String dateFin, Client client,
+			Element element) {
+		this.locationDao.create(new Location(dateCreation, dateDebut, dateFin, client, element));
 
 	}
 
 	@Override
-	public void updateLocation(LocalDate dateCreation, LocalDate dateDebut, LocalDate dateFin, Client client,
-			WorkSpace workSpace, long id) {
-		this.locationDao.update(new Location(dateCreation, dateDebut, dateFin, client, workSpace),id);
+	public void updateLocation(String dateCreation, String dateDebut, String dateFin, Client client,
+			Element element, long id) {
+		this.locationDao.update(new Location(dateCreation, dateDebut, dateFin, client, element),id);
 
 	}
 

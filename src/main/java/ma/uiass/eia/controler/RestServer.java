@@ -20,6 +20,7 @@ import ma.uiass.eia.persistency.dto.WorkSpaceDto;
 import ma.uiass.eia.persistency.entities.Client;
 import ma.uiass.eia.persistency.entities.ClientEntreprise;
 import ma.uiass.eia.persistency.entities.ClientIndividu;
+import ma.uiass.eia.persistency.entities.Element;
 import ma.uiass.eia.persistency.entities.Etage;
 import ma.uiass.eia.persistency.entities.Location;
 import ma.uiass.eia.persistency.entities.SmartBuilding;
@@ -28,6 +29,7 @@ import ma.uiass.eia.persistency.entities.Ville;
 import ma.uiass.eia.persistency.entities.WorkSpace;
 import ma.uiass.eia.service.ClientService;
 import ma.uiass.eia.service.ClientServiceInterface;
+import ma.uiass.eia.service.ElementService;
 import ma.uiass.eia.service.EtageService;
 import ma.uiass.eia.service.EtageServiceInterface;
 import ma.uiass.eia.service.LocationService;
@@ -46,6 +48,7 @@ public class RestServer {
 	private static WorkSpaceServiceInterface serviceW;
 	private static ClientService serviceC;
 	private static LocationService serviceL;
+	private static ElementService serviceEle;
 
 	static {
 //		serviceSpark=Service.ignite();
@@ -55,6 +58,7 @@ public class RestServer {
 		serviceW = new WorkSpaceService();
 		serviceC = new ClientService();
 		serviceL = new LocationService();
+		serviceEle=new ElementService();
 	}
 	public RestServer() {
 
@@ -335,8 +339,9 @@ public class RestServer {
 		String type=workSpace.get("type").getAsString();
 		Etage etage=serviceE.getEtageById(id);
 		double prix=workSpace.get("prix").getAsDouble();
+		long numero = workSpace.get("numero").getAsLong();
 		
-		serviceW.createWorkSpace(surface, type, etage, position,prix);		
+		serviceW.createWorkSpace(numero,surface, type, etage, position,prix);		
 		
 		res.type("application/json");
         
@@ -356,8 +361,8 @@ public class RestServer {
 		int surface=workSpace.get("surface").getAsInt();
 		String type=workSpace.get("type").getAsString();
 		double prix=workSpace.get("prix").getAsDouble();
-		
-		serviceW.updateWorkSpace(surface, type, position,prix, id);		
+		long numero = workSpace.get("numero").getAsLong();
+		serviceW.updateWorkSpace(numero ,surface, type, position,prix, id);		
 		
 		res.type("application/json");
        
@@ -372,7 +377,7 @@ public class RestServer {
        String parame = req.params("id");
       
        long id =Long.parseLong(parame);
-       WorkSpaceDto workSpace=serviceW.getWorkSpaceById(id);       
+       WorkSpaceDto workSpace=serviceW.getWorkSpaceByIdDto(id);       
        //String message =v.toString();
        
        
@@ -382,7 +387,7 @@ public class RestServer {
    },gson::toJson);
     
    
-   /*delete("/api/workSpaces/:id/remove", (req, res) -> {
+   delete("/api/workSpaces/:id/remove", (req, res) -> {
     	 String message="etage deleted avec succes";
     	 String parame = req.params("id");
     	 long id =Long.parseLong(parame);
@@ -391,7 +396,7 @@ public class RestServer {
     	 
     	 res.type("application/json");
     	 return message;
-    	},gson::toJson);*/
+    	},gson::toJson);
     
     
     
@@ -400,7 +405,7 @@ public class RestServer {
 	   List<ClientEntreprise> clients = new ArrayList<ClientEntreprise>() ;
        clients= serviceC.getAllClientsEntreprise();
 	   
-	   System.out.println("from server --------->"+clients);
+	   //System.out.println("from server --------->"+clients);
 	   res.type("application/json");
 
 	   return clients;
@@ -470,6 +475,7 @@ public class RestServer {
   get("/api/ce/locations", (req, res) -> {
 	  
 	  List<Location> locations = serviceL.getAllLocations();
+	  System.out.println("From server ------->"+locations);
 	   res.type("application/json");
 
 	   return locations;
@@ -477,18 +483,18 @@ public class RestServer {
   		},gson::toJson);
    
    
- /* post("/api/locations/:idClient/:idWorkspace/add",(req,res)->{
+ post("/api/locations/:idClient/:idElement/add",(req,res)->{
   	String message="location créee avec succès";
   	
   	String parame = req.params("idClient");
     long idClient =Long.parseLong(parame);
     
-    String par = req.params("idWorkspace");
-    long idWorkspace =Long.parseLong(par);
+    String par = req.params("idElement");
+    long idElement =Long.parseLong(par);
     
     
     Client client = serviceC.getClientById(idClient);
-    WorkSpace workSpace = serviceW.getWorkSpaceById(idWorkspace);
+    Element element= serviceEle.getElementById(idElement);
 		  
 		//System.out.println(req.body()); //parse(req.body()); 
 		JsonObject location = new JsonParser().parse(req.body()).getAsJsonObject();
@@ -496,13 +502,13 @@ public class RestServer {
 		String dateDebut=location.get("dateDebut").getAsString();
 		String dateFin = location.get("dateFin").getAsString();
 		
-		serviceL.createLocation(LocalDate.parse(dateCreation), LocalDate.parse(dateDebut), LocalDate.parse(dateFin), client, workSpace)	;
+		serviceL.createLocation(dateCreation, dateDebut, dateFin, client,element)	;
 		
 		res.type("application/json");
       
       return message; 
   },gson::toJson);
-   */
+   
    
    
    

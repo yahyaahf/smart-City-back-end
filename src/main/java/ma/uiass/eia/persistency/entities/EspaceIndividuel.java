@@ -1,11 +1,9 @@
 package ma.uiass.eia.persistency.entities;
 
-import javax.persistence.DiscriminatorValue;
-
-import org.hibernate.annotations.Entity;
+import javax.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("EspaceIndividuel")
+//@DiscriminatorValue("EspaceIndividuel")
 
 public class EspaceIndividuel extends WorkSpace {
 
@@ -14,13 +12,13 @@ public class EspaceIndividuel extends WorkSpace {
 		// TODO Auto-generated constructor stub
 	}
 
-	public EspaceIndividuel(int surface, Etage etage, String position,Double prix) {
-		super(surface, etage, position,prix);
+	public EspaceIndividuel(long numero,int surface, Etage etage, String position,Double prix) {
+		super(numero  ,surface, etage, position,prix);
 		// TODO Auto-generated constructor stub
 	}
 
-	public EspaceIndividuel( int surface, String position,Double prix) {
-		super( surface, position,prix);
+	public EspaceIndividuel(long numero , int surface, String position,Double prix) {
+		super(numero , surface, position,prix);
 		// TODO Auto-generated constructor stub
 	}
 

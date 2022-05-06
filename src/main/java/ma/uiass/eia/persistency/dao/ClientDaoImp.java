@@ -47,7 +47,7 @@ public class ClientDaoImp implements IDAO<Client>{
 			 if(client!=null) {
 				client.setAdress(object.getAdress());
 				client.setEmail(object.getEmail());
-				client.setLocations(object.getLocations());
+				//client.setLocations(object.getLocations());
 				client.setTelephone(object.getTelephone());
 				entityManager.merge(client);
 				transaction.commit();

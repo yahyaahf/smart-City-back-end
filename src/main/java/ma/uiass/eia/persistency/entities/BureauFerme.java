@@ -4,7 +4,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("BureauFerme")
+//@DiscriminatorValue("BureauFerme")
 
 public class BureauFerme extends WorkSpace {
 
@@ -13,13 +13,13 @@ public class BureauFerme extends WorkSpace {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BureauFerme(int surface, Etage etage, String position,Double prix) {
-		super(surface, etage, position,prix);
+	public BureauFerme(long numero ,int surface, Etage etage, String position,Double prix) {
+		super(numero ,surface, etage, position,prix);
 		// TODO Auto-generated constructor stub
 	}
 
-	public BureauFerme( int surface, String position,Double prix) {
-		super( surface, position,prix);
+	public BureauFerme(long numero, int surface, String position,Double prix) {
+		super(numero , surface, position,prix);
 		// TODO Auto-generated constructor stub
 	}
 

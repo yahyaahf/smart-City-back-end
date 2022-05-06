@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import ma.uiass.eia.persistency.entities.Client;
-
+import ma.uiass.eia.persistency.entities.Element;
 import ma.uiass.eia.persistency.entities.Location;
 import ma.uiass.eia.persistency.entities.WorkSpace;
 
@@ -15,11 +15,11 @@ public interface LocationServiceInterface {
 
 	Location getLocationeById(long numero);
 
-	void createLocation(LocalDate dateCreation, LocalDate dateDebut, LocalDate dateFin, Client client,
-			WorkSpace workSpace);
+	void createLocation(String dateCreation, String dateDebut, String dateFin, Client client,
+			Element element);
 
-	void updateLocation(LocalDate dateCreation, LocalDate dateDebut, LocalDate dateFin, Client client,
-			WorkSpace workSpace,long id);
+	void updateLocation(String dateCreation, String dateDebut, String dateFin, Client client,
+			Element element,long id);
 
 	void deleteLocation(Location object);
 
