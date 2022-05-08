@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name="VILLE")  
@@ -20,10 +21,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Ville implements Serializable{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Expose
 	private long numero;
-     	
+    @Expose
 	private String nom;
+    @Expose
 	private double latitude;
+    @Expose
 	private double longitude;
 	
 	@OneToMany(mappedBy="ville")

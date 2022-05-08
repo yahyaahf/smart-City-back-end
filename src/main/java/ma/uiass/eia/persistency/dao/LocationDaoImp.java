@@ -56,9 +56,10 @@ private EntityManager entityManager;
 
 	@Override
 	public List<Location> getAll() {
-Query query = entityManager.createQuery("select w from Location w");
-		
-		return query.getResultList();
+Query query = entityManager.createQuery("select l from Location l");
+	List<Location > locations=	query.getResultList();
+	
+		return locations;
 	}
 
 }

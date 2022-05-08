@@ -22,7 +22,7 @@ public class WorkSpaceService implements WorkSpaceServiceInterface {
 		List<WorkSpaceDto> list = new ArrayList<WorkSpaceDto>();
 		List<WorkSpace> l= this.workSpaceDao.getAll();
 		for (WorkSpace workSpace : l) {
-			WorkSpaceDto wDto=new WorkSpaceDto(workSpace.getNumero(),workSpace.getPosition(),workSpace.toString(),workSpace.getSurface(),workSpace.getEtage().getNumEtage(),workSpace.getPrix());
+			WorkSpaceDto wDto=new WorkSpaceDto(workSpace.getId(),workSpace.getNumero(),workSpace.getPosition(),workSpace.toString(),workSpace.getSurface(),workSpace.getEtage().getNumEtage(),workSpace.getPrix());
 			list.add(wDto);
 		}		
 		return list ;
@@ -31,7 +31,7 @@ public class WorkSpaceService implements WorkSpaceServiceInterface {
 	@Override
 	public WorkSpaceDto getWorkSpaceByIdDto(long numero) {
 		WorkSpace work= this.workSpaceDao.getById(numero);
-		WorkSpaceDto wDto=new WorkSpaceDto(work.getNumero(), work.getPosition(),work.toString(),work.getSurface(),work.getEtage().getNumEtage(),work.getPrix());
+		WorkSpaceDto wDto=new WorkSpaceDto(work.getId(), work.getNumero(), work.getPosition(),work.toString(),work.getSurface(),work.getEtage().getNumEtage(),work.getPrix());
 		
 		return wDto;
 	}
@@ -72,7 +72,7 @@ public class WorkSpaceService implements WorkSpaceServiceInterface {
 		List<WorkSpaceDto> list = new ArrayList<WorkSpaceDto>();
 		List<WorkSpace> l= this.workSpaceDao.getAll();
 		for (WorkSpace workSpace : l) {
-			WorkSpaceDto wDto=new WorkSpaceDto(workSpace.getNumero(),workSpace.getPosition(),workSpace.toString(),workSpace.getSurface(),workSpace.getEtage().getEtageNum(),workSpace.getPrix());
+			WorkSpaceDto wDto=new WorkSpaceDto(workSpace.getId(),workSpace.getNumero(),workSpace.getPosition(),workSpace.toString(),workSpace.getSurface(),workSpace.getEtage().getEtageNum(),workSpace.getPrix());
 			list.add(wDto);
 		}		
 		return list ;

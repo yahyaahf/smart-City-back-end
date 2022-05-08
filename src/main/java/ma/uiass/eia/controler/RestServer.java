@@ -12,6 +12,7 @@ import javax.print.attribute.standard.Severity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -21,8 +22,10 @@ import ma.uiass.eia.persistency.entities.Client;
 import ma.uiass.eia.persistency.entities.ClientEntreprise;
 import ma.uiass.eia.persistency.entities.ClientIndividu;
 import ma.uiass.eia.persistency.entities.Element;
+import ma.uiass.eia.persistency.entities.Employee;
 import ma.uiass.eia.persistency.entities.Etage;
 import ma.uiass.eia.persistency.entities.Location;
+import ma.uiass.eia.persistency.entities.Reservation;
 import ma.uiass.eia.persistency.entities.SmartBuilding;
 import ma.uiass.eia.persistency.entities.Ville;
 
@@ -30,9 +33,13 @@ import ma.uiass.eia.persistency.entities.WorkSpace;
 import ma.uiass.eia.service.ClientService;
 import ma.uiass.eia.service.ClientServiceInterface;
 import ma.uiass.eia.service.ElementService;
+import ma.uiass.eia.service.EmployeeService;
+import ma.uiass.eia.service.EmployeeServiceInterface;
 import ma.uiass.eia.service.EtageService;
 import ma.uiass.eia.service.EtageServiceInterface;
 import ma.uiass.eia.service.LocationService;
+import ma.uiass.eia.service.ReservationService;
+import ma.uiass.eia.service.ReservationServiceInterface;
 import ma.uiass.eia.service.SmartBuildingService;
 import ma.uiass.eia.service.SmartBuildingServiceInterface;
 import ma.uiass.eia.service.VilleService;
@@ -49,16 +56,20 @@ public class RestServer {
 	private static ClientService serviceC;
 	private static LocationService serviceL;
 	private static ElementService serviceEle;
+	private static EmployeeServiceInterface serviceEmp;
+	private static ReservationServiceInterface serviceR;
 
 	static {
 //		serviceSpark=Service.ignite();
-		serviceV = new VilleService();
-		serviceS = new SmartBuildingService();
-		serviceE = new EtageService();
-		serviceW = new WorkSpaceService();
-		serviceC = new ClientService();
-		serviceL = new LocationService();
+		serviceV  = new VilleService();
+		serviceS  = new SmartBuildingService();
+		serviceE  = new EtageService();
+		serviceW  = new WorkSpaceService();
+		serviceC  = new ClientService();
+		serviceL  = new LocationService();
 		serviceEle=new ElementService();
+		serviceEmp=new EmployeeService();
+		serviceR = new ReservationService();
 	}
 	public RestServer() {
 
@@ -70,7 +81,7 @@ public class RestServer {
 	 * System.out.println("serveur démarré sur l'adresse http://localhost:4567");
 	 */
 	public static void main(String[] args) {
-    	 Gson gson = new Gson();
+    	 Gson gson =  new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     	
     	 
 //-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=
@@ -472,7 +483,7 @@ public class RestServer {
    
 //--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-= 
   
-  get("/api/ce/locations", (req, res) -> {
+  get("/api/locations", (req, res) -> {
 	  
 	  List<Location> locations = serviceL.getAllLocations();
 	  System.out.println("From server ------->"+locations);
@@ -512,17 +523,114 @@ public class RestServer {
    
    
    
+//--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-= 
+ 
    
    
+ get("/api/employees/:idEntreprise", (req, res) -> {
+	 String parame = req.params("idEntreprise");
+     long idEntreprise =Long.parseLong(parame);
+	  List<Employee> employees=serviceEmp.getAllEmployeesByEntreprise(idEntreprise);
+	  System.out.println("From server ------->"+employees);
+	   res.type("application/json");
+
+	   return employees;
+ 
+ 		},gson::toJson);
    
+ post("/api/employees/:idEntreprise/add",(req,res)->{
+ 	String message="employee créee avec succès";
+ 	
+ 	String parame = req.params("idEntreprise");
+     long idEntreprise =Long.parseLong(parame);
+		  
+		//System.out.println(req.body()); //parse(req.body()); 
+		JsonObject employee = new JsonParser().parse(req.body()).getAsJsonObject();
+		String  email =employee.get("email").getAsString();
+		String telephone=employee.get("telephone").getAsString();
+		String adress=employee.get("adress").getAsString();
+		String sexe=employee.get("sexe").getAsString();
+		String nom=employee.get("nom").getAsString();
+		String prenom=employee.get("prenom").getAsString();
+		ClientEntreprise entreprise=serviceC.getClientEntrepriseById(idEntreprise);
+		
+		serviceEmp.createEmployee(nom, prenom, email, sexe, telephone, adress, entreprise);	
+		
+		res.type("application/json");
+     
+     return message; 
+ },gson::toJson); 
+ get("/api/employees/employee/:id",(req,res)->{
+     
+     
+     String parame = req.params("id");
+     long id =Long.parseLong(parame);
+     
+     
+     Employee employee=serviceEmp.getEmployeeById(id);
+     //String message =v.toString();
+     
+     
+      res.type("application/json");
+         
+         return employee; 
+ },gson::toJson);
    
-   
-   
-   
-   
-   
-   
-   
+//--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-= 
+ get("/api/reservations", (req, res) -> {
+	 
+	  List<Reservation> reservations = serviceR.getAllReservations();
+	  System.out.println("From server ------->"+reservations);
+	   res.type("application/json");
+
+	   return reservations;
+ 
+ 		},gson::toJson);
+ 
+ 
+ post("/api/reservations/:idWorkspace/:idEmployee/add",(req,res)->{
+	 	String message="reservation créee avec succès";
+	 	
+	 	String parame = req.params("idWorkspace");
+	     long idWorkspace =Long.parseLong(parame);
+	     
+	     
+	     String par = req.params("idEmployee");
+	     long idEmployee =Long.parseLong(par);
+			  
+			//System.out.println(req.body()); //parse(req.body()); 
+			JsonObject reservation = new JsonParser().parse(req.body()).getAsJsonObject();
+			String dateDebut=reservation.get("dateDebut").getAsString();
+			String dateFin = reservation.get("dateFin").getAsString();
+			String heureDebut=reservation.get("heureDebut").getAsString();
+			String heureFin=reservation.get("heureFin").getAsString();
+			
+			Employee employee=serviceEmp.getEmployeeById(idEmployee);
+			WorkSpace workSpace=serviceW.getWorkSpaceById(idWorkspace);
+			
+			serviceR.createReservation(dateDebut, dateFin, heureDebut, heureFin, workSpace, employee);
+			
+			res.type("application/json");
+	     
+	     return message; 
+	 },gson::toJson); 
+ 
+ 
+ get("/api/reservations/:id",(req,res)->{
+     
+     
+     String parame = req.params("id");
+     long id =Long.parseLong(parame);
+     
+     
+     Reservation reservation = serviceR.getReservationById(id);
+     //String message =v.toString();
+     
+     
+      res.type("application/json");
+         
+         return reservation; 
+ },gson::toJson);
    
    
    

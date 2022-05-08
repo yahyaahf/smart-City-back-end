@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name="ETAGE")
@@ -20,7 +21,9 @@ public class Etage extends Element {
 	//@Id
 	//@GeneratedValue(strategy=GenerationType.IDENTITY)
 	//private long numEtage;
+	@Expose
 	private int etageNum;
+	@Expose
 	private double surface;
 	
 	

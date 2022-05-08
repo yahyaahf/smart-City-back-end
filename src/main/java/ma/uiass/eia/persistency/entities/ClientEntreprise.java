@@ -1,20 +1,33 @@
 package ma.uiass.eia.persistency.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+
+import com.google.gson.annotations.Expose;
 
 
 @Entity
 
 public class ClientEntreprise  extends Client implements Serializable{
-	
+	@Expose
 	private String formeJuridique;
+	@Expose
     private String patente;
-    
+	@OneToMany(mappedBy = "entreprise")
+	private Collection<Employee> employees;
    
-    public ClientEntreprise() {
+    public Collection<Employee> getEmployees() {
+		return employees;
+	}
+
+	public void setEmployees(Collection<Employee> employees) {
+		this.employees = employees;
+	}
+
+	public ClientEntreprise() {
 
     }
 

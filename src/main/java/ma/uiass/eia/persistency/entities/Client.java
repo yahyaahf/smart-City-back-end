@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gson.annotations.Expose;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -27,10 +28,13 @@ public abstract class Client implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
+	@Expose
 	private long id;
-	
+	@Expose
 	private String email;
+	@Expose
 	private String telephone;
+	@Expose
 	private String adress;
 	@OneToMany(mappedBy ="client",fetch = FetchType.LAZY)
 	@JsonIgnore

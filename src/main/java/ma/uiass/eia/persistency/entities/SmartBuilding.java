@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name="SMARTBUILDING")
@@ -22,16 +23,19 @@ public class SmartBuilding implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Expose
 	private long numero;
-	
+	@Expose
 	private int nombreEtages;
-	
+	@Expose
 	private String adress;
 	
 	@Column(name="SURFACE")
+	@Expose
 	private int surface;
-	
+	@Expose
 	private double longitude;
+	@Expose
 	private double latitude;
 	@JsonIgnore
 	@ManyToOne

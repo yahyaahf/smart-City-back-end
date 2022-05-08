@@ -5,13 +5,15 @@ import java.io.Serializable;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import com.google.gson.annotations.Expose;
+
 
 @Entity
 
 public class ClientIndividu extends Client implements Serializable {
-	
+	@Expose
 	private String nom,prenom;
-	
+	@Expose
 	private String sexe;
 	
 	public ClientIndividu() {

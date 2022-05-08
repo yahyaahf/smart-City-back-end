@@ -1,6 +1,6 @@
 package ma.uiass.eia.service;
 
-import java.time.LocalDate;
+
 import java.util.List;
 
 import ma.uiass.eia.persistency.dao.LocationDaoImp;
@@ -17,8 +17,9 @@ public class LocationService implements LocationServiceInterface {
 	}
 	@Override
 	public List<Location> getAllLocations() {
+		List<Location> locations=this.locationDao.getAll();
 		
-		return this.locationDao.getAll();
+		return locations;
 	}
 
 	@Override

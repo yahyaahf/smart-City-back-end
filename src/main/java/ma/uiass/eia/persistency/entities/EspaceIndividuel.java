@@ -21,7 +21,12 @@ public class EspaceIndividuel extends WorkSpace {
 		super(numero , surface, position,prix);
 		// TODO Auto-generated constructor stub
 	}
-
+	public long getId() {
+		return super.getId();
+	}
+	public void setId(long id) {
+		super.setId(id);
+	}
 	@Override
 	public String toString() {
 		return "EspaceIndividuel";

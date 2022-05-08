@@ -1,28 +1,32 @@
 package ma.uiass.eia.persistency.entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+
 
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.google.gson.annotations.Expose;
+
 
 @Entity
 @Table(name = "LOCATION")
 public class Location implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Expose
     private long id;
-    
+    @Expose
     private String dateCreation;
-    
+    @Expose
     private String dateDebut;
-    
+    @Expose
     private String dateFin ;
     @ManyToOne
+    @JsonIgnore
     private Client client ;
     @OneToOne
+    @JsonIgnore
     private Element element ;
     
     public Location() {

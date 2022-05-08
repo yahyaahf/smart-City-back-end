@@ -14,6 +14,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gson.annotations.Expose;
 
 
 
@@ -24,11 +25,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public abstract class WorkSpace extends Element {
    //@Id
    //@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Expose
 	private long numero;
-	
+	@Expose
 	private int surface;
-	
+	@Expose
 	private Double prix;
+	@Expose
 	private String position;
 	@JsonIgnore
 	@ManyToOne
@@ -56,6 +59,12 @@ public abstract class WorkSpace extends Element {
 		this.etage = etage;
 		this.position = position;
 		this.prix=prix;
+	}
+	public long getId() {
+		return super.getId();
+	}
+	public void setId(long id) {
+		super.setId(id);
 	}
 
 	public long getNumero() {

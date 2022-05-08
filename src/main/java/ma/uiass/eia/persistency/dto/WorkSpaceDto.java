@@ -2,12 +2,22 @@ package ma.uiass.eia.persistency.dto;
 
 import java.time.LocalDate;
 
+import com.google.gson.annotations.Expose;
+
 public class WorkSpaceDto {
+	@Expose
+	private long id ;
+	@Expose
 	private  long numero;
+	@Expose
 	private String position;
+	@Expose
 	private String type ; 
+	@Expose
 	private int  surface;
+	@Expose
 	private long numeroEtage;
+	@Expose
 	private double prix ;
 	public long getNumero() {
 		return numero;
@@ -45,7 +55,14 @@ public class WorkSpaceDto {
 	public void setPrix(double prix) {
 		this.prix = prix;
 	}
-	public WorkSpaceDto(long numero, String position, String type, int surface, long numeroEtage, double prix) {
+	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public WorkSpaceDto(long id ,long numero, String position, String type, int surface, long numeroEtage, double prix) {
 		super();
 		this.numero = numero;
 		this.position = position;
@@ -53,6 +70,7 @@ public class WorkSpaceDto {
 		this.surface = surface;
 		this.numeroEtage = numeroEtage;
 		this.prix = prix;
+		this.id=id;
 	}
 	
 
