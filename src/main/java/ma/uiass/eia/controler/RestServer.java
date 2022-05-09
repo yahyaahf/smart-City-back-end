@@ -184,7 +184,7 @@ public class RestServer {
     
 		
     post("/api/smartBuildings/:idVille/add",(req,res)->{
-    	String message="smartBuilding créee avec succès";
+    	String message="smartBuilding crée avec succès";
     	String parame = req.params("idVille");
      	long id =Long.parseLong(parame);  
 		//System.out.println(req.body()); //parse(req.body()); 
