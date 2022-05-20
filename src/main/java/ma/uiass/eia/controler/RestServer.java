@@ -1,51 +1,20 @@
 package ma.uiass.eia.controler;
 
 import static spark.Spark.*;
-import spark.Service;
 
-import java.time.LocalDate;
+import ma.uiass.eia.persistency.dto.EquipementDto;
+import ma.uiass.eia.persistency.entities.*;
+import ma.uiass.eia.service.*;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import javax.print.attribute.standard.Severity;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import ma.uiass.eia.persistency.dto.WorkSpaceDto;
-import ma.uiass.eia.persistency.entities.Client;
-import ma.uiass.eia.persistency.entities.ClientEntreprise;
-import ma.uiass.eia.persistency.entities.ClientIndividu;
-import ma.uiass.eia.persistency.entities.Element;
-import ma.uiass.eia.persistency.entities.Employee;
-import ma.uiass.eia.persistency.entities.Etage;
-import ma.uiass.eia.persistency.entities.Location;
-import ma.uiass.eia.persistency.entities.Reservation;
-import ma.uiass.eia.persistency.entities.SmartBuilding;
-import ma.uiass.eia.persistency.entities.Ville;
-
-import ma.uiass.eia.persistency.entities.WorkSpace;
-import ma.uiass.eia.service.ClientService;
-import ma.uiass.eia.service.ClientServiceInterface;
-import ma.uiass.eia.service.ElementService;
-import ma.uiass.eia.service.EmployeeService;
-import ma.uiass.eia.service.EmployeeServiceInterface;
-import ma.uiass.eia.service.EtageService;
-import ma.uiass.eia.service.EtageServiceInterface;
-import ma.uiass.eia.service.LocationService;
-import ma.uiass.eia.service.ReservationService;
-import ma.uiass.eia.service.ReservationServiceInterface;
-import ma.uiass.eia.service.SmartBuildingService;
-import ma.uiass.eia.service.SmartBuildingServiceInterface;
-import ma.uiass.eia.service.VilleService;
-import ma.uiass.eia.service.VilleServiceInterface;
-import ma.uiass.eia.service.WorkSpaceService;
-import ma.uiass.eia.service.WorkSpaceServiceInterface;
 
 public class RestServer {
 //	private static Service serviceSpark;
@@ -58,6 +27,7 @@ public class RestServer {
 	private static ElementService serviceEle;
 	private static EmployeeServiceInterface serviceEmp;
 	private static ReservationServiceInterface serviceR;
+	private static EquipementServiceInterface serviceEqu;
 
 	static {
 //		serviceSpark=Service.ignite();
@@ -70,6 +40,7 @@ public class RestServer {
 		serviceEle=new ElementService();
 		serviceEmp=new EmployeeService();
 		serviceR = new ReservationService();
+		serviceEqu=new EquipementService();
 	}
 	public RestServer() {
 
@@ -82,7 +53,7 @@ public class RestServer {
 	 */
 	public static void main(String[] args) {
     	 Gson gson =  new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-    	
+		System.out.println("serveur démarré sur l'adresse http://localhost:4567");
     	 
 //-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=-=-=-=-=-==--=
     	 get("/api/villes", (req,res)-> {
@@ -631,8 +602,58 @@ public class RestServer {
          
          return reservation; 
  },gson::toJson);
-   
-   
-   
+ //--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=--=-=-=-=-=-=
+		get("/api/equipements",(req,res)->{
+
+			List<EquipementDto> equipements= serviceEqu.getAllEquipements();
+			//String message =v.toString();
+
+
+			res.type("application/json");
+
+			return equipements;
+		},gson::toJson);
+
+
+		get("/api/equipements/:id",(req,res)->{
+
+
+			String parame = req.params("id");
+			long id =Long.parseLong(parame);
+
+
+			Equipement equipement=serviceEqu.getEquipementById(id);
+			//String message =v.toString();
+
+
+			res.type("application/json");
+
+			return equipement;
+		},gson::toJson);
+
+		post("/api/equipements/:idWorkSpace/add",(req,res)->{
+			String message="equipement créee avec succès";
+
+			String parame = req.params("idWorkSpace");
+			long idWorkSpace =Long.parseLong(parame);
+
+
+
+			//System.out.println(req.body());
+			JsonObject equipement = new JsonParser().parse(req.body()).getAsJsonObject();
+			String code =equipement.get("code").getAsString();
+			boolean etat=equipement.get("etat").getAsBoolean();
+			String type=equipement.get("type").getAsString();
+
+			WorkSpace workSpace=serviceW.getWorkSpaceById(idWorkSpace);
+
+			serviceEqu.createEquipement(code,workSpace,etat,type);
+
+
+
+			res.type("application/json");
+
+			return message;
+		},gson::toJson);
 }
 }

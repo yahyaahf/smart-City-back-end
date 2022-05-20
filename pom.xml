@@ -68,6 +68,12 @@
     
     
   </dependencies>
+    <properties>
+
+            <maven.compiler.source>1.8</maven.compiler.source>
+            <maven.compiler.target>1.8</maven.compiler.target>
+
+    </properties>
 
   <build>
         <!-- Gestion des plugins (version) -->
@@ -138,7 +144,7 @@
                 <configuration>
                     <appName>smartcityy</appName>
                     <processTypes>
-                        <web>java $JAVA_OPTS -cp target/classes:target/dependency/* ma.uiass.eia.persistency.main.InitializeDB</web>
+                        <web>java -jar output\smart-city-1.2-SNAPSHOT-jar-with-dependencies.jar</web>
                     </processTypes>
                 </configuration>
                 <version>3.0.3</version>

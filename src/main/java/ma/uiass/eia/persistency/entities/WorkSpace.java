@@ -1,6 +1,7 @@
 package ma.uiass.eia.persistency.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
@@ -36,6 +38,8 @@ public abstract class WorkSpace extends Element {
 	@JsonIgnore
 	@ManyToOne
 	private Etage etage;
+	@OneToMany(mappedBy = "workSpace")
+	Collection<Equipement> equipements;
 	
 	
 	public WorkSpace() {
@@ -109,6 +113,20 @@ public abstract class WorkSpace extends Element {
 
 	public void setPrix(Double prix) {
 		this.prix = prix;
+	}
+
+
+	public Collection<Equipement> getEquipements() {
+		return equipements;
+	}
+
+
+	public void setEquipements(Collection<Equipement> equipements) {
+		this.equipements = equipements;
+	}
+	
+	public void addEquipement(Equipement equipement) {
+		this.equipements.add(equipement);
 	}
 
 	
