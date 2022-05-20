@@ -1,0 +1,30 @@
+version: '3'
+services:
+  mydb:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DATABASE=smartcity
+
+  app:
+    depends_on:
+      - mydb
+    image: app-image:latest
+
+    ports:
+      - 4567:4567
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DATABASE=smartcity
+    restart: always
+
+
+volumes:
+  db_data: {}
