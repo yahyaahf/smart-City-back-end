@@ -7,10 +7,14 @@ import ma.uiass.eia.persistency.entities.*;
 import ma.uiass.eia.service.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -321,9 +325,9 @@ public class RestServer {
 		String type=workSpace.get("type").getAsString();
 		Etage etage=serviceE.getEtageById(id);
 		double prix=workSpace.get("prix").getAsDouble();
-		long numero = workSpace.get("numero").getAsLong();
+		//long numero = workSpace.get("numero").getAsLong();
 		
-		serviceW.createWorkSpace(numero,surface, type, etage, position,prix);		
+		serviceW.createWorkSpace(0,surface, type, etage, position,prix);
 		
 		res.type("application/json");
         
@@ -344,7 +348,14 @@ public class RestServer {
 		String type=workSpace.get("type").getAsString();
 		double prix=workSpace.get("prix").getAsDouble();
 		long numero = workSpace.get("numero").getAsLong();
-		serviceW.updateWorkSpace(numero ,surface, type, position,prix, id);		
+		/*JsonArray equipements=workSpace.get("equipements").getAsJsonArray();
+		List<Map<String, Integer>> equipementlist=new ArrayList<>();
+		Iterator<JsonElement> iterator=equipements.iterator();
+		while(iterator.hasNext()) {
+			Map<String, Integer> eqi=(Map<String, Integer>) iterator.next();
+			equipementlist.add(eqi);
+		}*/
+		serviceW.updateWorkSpace(numero ,surface, type, position,prix, id);
 		
 		res.type("application/json");
        
@@ -353,7 +364,7 @@ public class RestServer {
     
     
     
-   get("/api/workSpaces/:id",(req,res)->{
+   get("/api/workSpaces/workSpace/:id",(req,res)->{
        
        
        String parame = req.params("id");

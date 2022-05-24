@@ -38,14 +38,17 @@ public class WorkSpaceService implements WorkSpaceServiceInterface {
 
 	@Override
 	public void createWorkSpace(long numero ,int surface, String type, Etage etage, String position,Double prix) {
+		int num =1;
+		if (etage.getWorkSpaces()!=null) num=etage.getWorkSpaces().size()+1 ;
+
 		if (type.equals("BF")) {
-			this.workSpaceDao.create(new BureauFerme( numero , surface, etage, position,prix));
+			this.workSpaceDao.create(new BureauFerme( num , surface, etage, position,prix));
 			
 		}
 		else if(type.equals("SR")) {
-			this.workSpaceDao.create(new SalleReunion(numero ,surface, etage, position,prix));
+			this.workSpaceDao.create(new SalleReunion(num ,surface, etage, position,prix));
 		}
-		else this.workSpaceDao.create(new EspaceIndividuel(numero ,surface, etage, position,prix));
+		else this.workSpaceDao.create(new EspaceIndividuel(num ,surface, etage, position,prix));
 		
 
 	}
@@ -70,7 +73,7 @@ public class WorkSpaceService implements WorkSpaceServiceInterface {
 	@Override
 	public List<WorkSpaceDto> getAllWorkSpacesByEtage(long idEtage) {
 		List<WorkSpaceDto> list = new ArrayList<WorkSpaceDto>();
-		List<WorkSpace> l= this.workSpaceDao.getAll();
+		List<WorkSpace> l= this.workSpaceDao.getAllByEtage(idEtage);
 		for (WorkSpace workSpace : l) {
 			WorkSpaceDto wDto=new WorkSpaceDto(workSpace.getId(),workSpace.getNumero(),workSpace.getPosition(),workSpace.toString(),workSpace.getSurface(),workSpace.getEtage().getEtageNum(),workSpace.getPrix());
 			list.add(wDto);
