@@ -2,19 +2,15 @@ package ma.uiass.eia.persistency.entities;
 
 import com.google.gson.annotations.Expose;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Collection;
 @Entity
-@Table(name="AILEEYAGE")
 public class AileEtage extends Element {
     public AileEtage(){}
     public AileEtage(Collection<WorkSpace> workSpaces){
         this.workSpaces=workSpaces;
     }
-    @OneToMany
+    @ManyToMany
     private Collection<WorkSpace> workSpaces ;
 
     public Collection<WorkSpace> getWorkSpaces() {
@@ -30,6 +26,15 @@ public class AileEtage extends Element {
 
     public void setId(long id) {
         super.setId(id);
+    }
+
+    @Override
+    public double getPrice() {
+        double price=0;
+        for(WorkSpace elm : this.workSpaces){
+            price+=elm.getPrice();
+        }
+        return (double)(price);
     }
 }
 

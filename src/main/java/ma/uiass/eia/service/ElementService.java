@@ -17,4 +17,8 @@ public class ElementService {
 		return this.elementDao.getById(id);
 		}
 
+	public void creatElement(Element element){
+		this.elementDao.create(element);
+	}
+
 }

@@ -1,5 +1,7 @@
 package ma.uiass.eia.persistency.entities;
 
+import java.util.Collection;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -22,6 +24,15 @@ public class SalleReunion extends WorkSpace {
 		super(numero , surface, position,prix);
 		// TODO Auto-generated constructor stub
 	}
+	
+	
+
+
+	public SalleReunion(long numero, int surface, String position, Double prix, Collection<Equipement> equipements) {
+		super(numero, surface, position, prix, equipements);
+		// TODO Auto-generated constructor stub
+	}
+
 	public long getId() {
 		return super.getId();
 	}

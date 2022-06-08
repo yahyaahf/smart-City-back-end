@@ -348,14 +348,8 @@ public class RestServer {
 		String type=workSpace.get("type").getAsString();
 		double prix=workSpace.get("prix").getAsDouble();
 		long numero = workSpace.get("numero").getAsLong();
-		/*JsonArray equipements=workSpace.get("equipements").getAsJsonArray();
-		List<Map<String, Integer>> equipementlist=new ArrayList<>();
-		Iterator<JsonElement> iterator=equipements.iterator();
-		while(iterator.hasNext()) {
-			Map<String, Integer> eqi=(Map<String, Integer>) iterator.next();
-			equipementlist.add(eqi);
-		}*/
-		serviceW.updateWorkSpace(numero ,surface, type, position,prix, id);
+		String equipements=workSpace.get("equipements").getAsString();
+		serviceW.updateWorkSpace(numero ,surface, type, position,prix,equipements, id);
 		
 		res.type("application/json");
        
@@ -501,6 +495,31 @@ public class RestServer {
       
       return message; 
   },gson::toJson);
+		post("/api/locations/:idClient/add",(req,res)->{
+			String message="location créee avec succès";
+
+			String parame = req.params("idClient");
+			long idClient =Long.parseLong(parame);
+
+
+
+
+			Client client = serviceC.getClientById(idClient);
+
+
+			//System.out.println(req.body()); //parse(req.body());
+			JsonObject location = new JsonParser().parse(req.body()).getAsJsonObject();
+			String dateCreation =location.get("dateCreation").getAsString();
+			String dateDebut=location.get("dateDebut").getAsString();
+			String dateFin = location.get("dateFin").getAsString();
+			String workSpaces=location.get("workSpaces").getAsString();
+
+			serviceL.createLocationAile(dateCreation, dateDebut, dateFin, client,workSpaces);	;
+
+			res.type("application/json");
+
+			return message;
+		},gson::toJson);
    
    
    

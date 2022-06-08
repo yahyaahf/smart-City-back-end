@@ -1,6 +1,7 @@
 package ma.uiass.eia.persistency.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -39,7 +40,8 @@ public abstract class WorkSpace extends Element {
 	@ManyToOne
 	private Etage etage;
 	@OneToMany(mappedBy = "workSpace")
-	Collection<Equipement> equipements;
+	@JsonIgnore
+	Collection<Equipement> equipements=new ArrayList<Equipement>();
 	
 	
 	public WorkSpace() {
@@ -64,6 +66,17 @@ public abstract class WorkSpace extends Element {
 		this.position = position;
 		this.prix=prix;
 	}
+	
+	public WorkSpace(long numero ,int surface, String position, Double prix, Collection<Equipement> equipements) {
+		super();
+		this.numero=numero;
+		this.surface = surface;
+		this.prix = prix;
+		this.position = position;
+		this.equipements = equipements;
+	}
+
+
 	public long getId() {
 		return super.getId();
 	}
@@ -127,6 +140,10 @@ public abstract class WorkSpace extends Element {
 	
 	public void addEquipement(Equipement equipement) {
 		this.equipements.add(equipement);
+	}
+	public double getPrice() {
+
+		return (double)(this.prix*this.surface);
 	}
 
 	

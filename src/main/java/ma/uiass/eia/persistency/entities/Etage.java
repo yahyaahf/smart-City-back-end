@@ -38,6 +38,9 @@ public class Etage extends Element {
 	public Etage() {
 		
 	}
+
+
+
 	public Etage(int etageNum, double surface) {
 		super();
 		this.etageNum = etageNum;
@@ -110,7 +113,14 @@ public class Etage extends Element {
 	public void setEtageNum(int etageNum) {
 		this.etageNum = etageNum;
 	}
-	
-	
+
+	@Override
+	public double getPrice() {
+		double price=0;
+		for(WorkSpace elm : this.workSpaces){
+			price+=elm.getPrice();
+		}
+		return (double)(price);
+	}
 
 }

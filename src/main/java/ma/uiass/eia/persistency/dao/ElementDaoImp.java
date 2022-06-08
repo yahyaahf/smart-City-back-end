@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import ma.uiass.eia.persistency.entities.Element;
@@ -20,7 +21,16 @@ public class ElementDaoImp implements IDAO<Element> {
 	}
 	@Override
 	public void create(Element object) {
-		// TODO Auto-generated method stub
+		EntityTransaction transaction= entityManager.getTransaction();
+		try {
+			transaction.begin();
+			this.entityManager.persist(object);
+			transaction.commit();
+		}
+		catch(Exception e) {
+			transaction.rollback();
+			System.out.println(e.getMessage());
+		}
 
 	}
 

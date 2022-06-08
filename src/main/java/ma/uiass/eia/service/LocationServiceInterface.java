@@ -23,6 +23,9 @@ public interface LocationServiceInterface {
 
 	void deleteLocation(Location object);
 
+	void createLocationAile(String dateCreation, String dateDebut, String dateFin, Client client,
+						String workSpaces);
+
 }
 
 

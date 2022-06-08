@@ -1,6 +1,10 @@
 package ma.uiass.eia.persistency.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 
 import javax.persistence.*;
@@ -22,6 +26,8 @@ public class Location implements Serializable {
     private String dateDebut;
     @Expose
     private String dateFin ;
+	@Expose
+	private double montant ;
     @ManyToOne
     @JsonIgnore
     private Client client ;
@@ -97,13 +103,33 @@ public class Location implements Serializable {
 		this.dateFin = dateFin;
 		this.client = client;
 		this.element = element;
+		this.setMontant(calculerMontant(dateDebut,dateFin,element.getPrice()));
+
 	}
 
 
-	
-	
-	
+	public double getMontant() {
+		return montant;
+	}
 
+	public void setMontant(double montant) {
+		this.montant = montant;
+	}
 
-    
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public static double calculerMontant(String dadu,String dafi,double prix){
+		DateTimeFormatter JEFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate dd=LocalDate.parse(dadu, JEFormatter);
+		LocalDate df=LocalDate.parse(dafi, JEFormatter);
+
+		//return this.element.getPrice()* ChronoUnit.DAYS.between(dd,df);
+		return  (double)(prix*ChronoUnit.DAYS.between(dd,df));
+	}
 }
