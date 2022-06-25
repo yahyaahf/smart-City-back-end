@@ -20,7 +20,7 @@ public interface WorkSpaceServiceInterface {
 
 	void createWorkSpace(long numero ,int surface, String type, Etage etage, String position,Double prix);
 
-	void updateWorkSpace(long numero ,int surface, String type, String position,Double prix,String equipements,long id);
+	void updateWorkSpace(long numero ,int surface, String type, String position,Double prix,long id);
 
 	void deleteWorkSpace(WorkSpace object);
 

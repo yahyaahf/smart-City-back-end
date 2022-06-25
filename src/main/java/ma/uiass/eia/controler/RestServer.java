@@ -348,8 +348,7 @@ public class RestServer {
 		String type=workSpace.get("type").getAsString();
 		double prix=workSpace.get("prix").getAsDouble();
 		long numero = workSpace.get("numero").getAsLong();
-		String equipements=workSpace.get("equipements").getAsString();
-		serviceW.updateWorkSpace(numero ,surface, type, position,prix,equipements, id);
+		serviceW.updateWorkSpace(numero ,surface, type, position,prix, id);
 		
 		res.type("application/json");
        
@@ -661,11 +660,14 @@ public class RestServer {
 			return equipement;
 		},gson::toJson);
 
-		post("/api/equipements/:idWorkSpace/add",(req,res)->{
+		post("/api/equipements/:idWorkSpace/:numEquipement/add",(req,res)->{
 			String message="equipement créee avec succès";
 
 			String parame = req.params("idWorkSpace");
 			long idWorkSpace =Long.parseLong(parame);
+			
+			String par = req.params("numEquipement");
+			int numEquipement =Integer.parseInt(par);
 
 
 
@@ -674,10 +676,11 @@ public class RestServer {
 			String code =equipement.get("code").getAsString();
 			boolean etat=equipement.get("etat").getAsBoolean();
 			String type=equipement.get("type").getAsString();
+			
 
 			WorkSpace workSpace=serviceW.getWorkSpaceById(idWorkSpace);
 
-			serviceEqu.createEquipement(code,workSpace,etat,type);
+			serviceEqu.createEquipement(code,workSpace,etat,type,numEquipement);
 
 
 

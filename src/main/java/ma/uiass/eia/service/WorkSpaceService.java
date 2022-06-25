@@ -60,39 +60,17 @@ public class WorkSpaceService implements WorkSpaceServiceInterface {
 	}
 
 	@Override
-	public void updateWorkSpace(long numero ,int surface, String type, String position,Double prix,String equipements,long id) {
-		List<String> myList = new ArrayList<String>(Arrays.asList(equipements.split(",")));
-		Collection<Equipement> equipementsList =workSpaceDao.getById(id).getEquipements();
-		if (equipementsList == null ) equipementsList=new ArrayList<Equipement>();
-		for (String string : myList) {
-			String mystring=string.replace("(", "").replace(")", "");
-			List<String> l = new ArrayList<String>(Arrays.asList(mystring.split(":")));
-			if (l.get(0).equalsIgnoreCase("CT") ) {
-				
-				for (int i=0 ; i<Integer.parseInt(l.get(1));i++) {
-				equipementsList.add(new CapteurTemperature());}
-			}
-			else if (l.get(0).equalsIgnoreCase("CH") ) {
-				
-				for (int i=0 ; i<Integer.parseInt(l.get(1));i++) {
-				equipementsList.add(new CapteurHumidite());}
-			}
-			else if (l.get(0).equalsIgnoreCase("CP") ) {
-				
-				for (int i=0 ; i<Integer.parseInt(l.get(1));i++) {
-				equipementsList.add(new CapteurPresence());}
-			}
-				
-			
-			
-		}
+	public void updateWorkSpace(long numero ,int surface, String type, String position,Double prix,long id) {
+		
+		
+		
 		if (type.equals("BF")) {
-			this.workSpaceDao.update(new BureauFerme(numero ,surface,  position,prix,equipementsList),id);
+			this.workSpaceDao.update(new BureauFerme(numero ,surface,  position,prix),id);
 		}
 		else if(type.equals("SR")) {
-			this.workSpaceDao.update(new SalleReunion(numero ,surface,  position,prix,equipementsList),id);
+			this.workSpaceDao.update(new SalleReunion(numero ,surface,  position,prix),id);
 		}
-		this.workSpaceDao.update(new EspaceIndividuel(numero ,surface, position,prix,equipementsList),id);
+		this.workSpaceDao.update(new EspaceIndividuel(numero ,surface, position,prix),id);
 	}
 
 	@Override

@@ -28,11 +28,19 @@ public class EquipementService implements EquipementServiceInterface{
     }
 
     @Override
-    public void createEquipement(String code, WorkSpace workSpace, boolean etat, String type) {
-        if(type.equalsIgnoreCase("OC")) this.equipementDao.create(new ObjetConnecte(code,workSpace,etat));
-        else if (type.equalsIgnoreCase("CH"))  this.equipementDao.create(new CapteurHumidite(code,workSpace,etat));
-        else if (type.equalsIgnoreCase("CP")) this.equipementDao.create(new CapteurPresence(code,workSpace,etat));
-        else if(type.equalsIgnoreCase("CT")) this.equipementDao.create(new CapteurTemperature(code,workSpace,etat));
+    public void createEquipement(String code, WorkSpace workSpace, boolean etat, String type,int numEquipement) {
+        if(type.equalsIgnoreCase("OC")) {
+        	for(int i=0;i<numEquipement;i++) { this.equipementDao.create(new ObjetConnecte(code,workSpace,etat));
+        }}
+        else if (type.equalsIgnoreCase("CH")) {
+        	for(int i=0;i<numEquipement;i++) {this.equipementDao.create(new CapteurHumidite(code,workSpace,etat));
+        }}
+        else if (type.equalsIgnoreCase("CP")) {
+        	for(int i=0;i<numEquipement;i++) {this.equipementDao.create(new CapteurPresence(code,workSpace,etat));
+        }}
+        else if(type.equalsIgnoreCase("CT")) {
+        	for(int i=0;i<numEquipement;i++) {this.equipementDao.create(new CapteurTemperature(code,workSpace,etat));
+        }}
 
         }
 

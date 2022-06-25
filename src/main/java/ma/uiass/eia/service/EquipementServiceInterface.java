@@ -13,5 +13,5 @@ public interface EquipementServiceInterface {
 
     Equipement getEquipementById(long id);
 
-    void createEquipement(String code, WorkSpace workSpace, boolean etat,String type);
+    void createEquipement(String code, WorkSpace workSpace, boolean etat,String type,int numEquipement);
 }

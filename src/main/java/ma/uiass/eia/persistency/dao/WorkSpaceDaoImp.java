@@ -47,7 +47,7 @@ public class WorkSpaceDaoImp implements IDAO<WorkSpace> {
 			transaction.begin();
 			WorkSpace workspace = entityManager.find(WorkSpace.class, id);
 			if (workspace!=null) {
-				workspace.setEquipements(object.getEquipements());
+				
 				workspace.setPosition(object.getPosition());
 				workspace.setSurface(object.getSurface());
 				workspace.setPrix(object.getPrix());
