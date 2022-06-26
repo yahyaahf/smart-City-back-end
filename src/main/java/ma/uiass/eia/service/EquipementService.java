@@ -41,6 +41,15 @@ public class EquipementService implements EquipementServiceInterface{
         else if(type.equalsIgnoreCase("CT")) {
         	for(int i=0;i<numEquipement;i++) {this.equipementDao.create(new CapteurTemperature(code,workSpace,etat));
         }}
+        else if(type.equalsIgnoreCase("ST")) {
+        	for(int i=0;i<numEquipement;i++) {this.equipementDao.create(new Store(code,workSpace,etat));
+        }}
+        else if(type.equalsIgnoreCase("V")) {
+        	for(int i=0;i<numEquipement;i++) {this.equipementDao.create(new Vitre(code,workSpace,etat));
+        }}
+        else if(type.equalsIgnoreCase("F")) {
+        	for(int i=0;i<numEquipement;i++) {this.equipementDao.create(new Fenetre(code,workSpace,etat));
+        }}
 
         }
 
